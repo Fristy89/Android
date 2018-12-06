@@ -10,7 +10,6 @@ class LoginScreenState extends State<LoginScreen>{
   final formKey = GlobalKey<FormState>();
 
   Widget build(context) {
-    var formReference = Form();
     return Container(
       margin: EdgeInsets.all(20.0),
       child: Form(
@@ -20,11 +19,11 @@ class LoginScreenState extends State<LoginScreen>{
             emailField(),
             passwordField(),
             Container(margin: EdgeInsets.only(top: 25.0)),
-            submitButton(),
-            Container(margin: EdgeInsets.only(top: 25.0)),
+            resetButton(),
+            loginButton(),
           ],
         ),
-      ), 
+      ) 
     );
   }   
   
@@ -37,6 +36,11 @@ class LoginScreenState extends State<LoginScreen>{
         labelText: 'Email Adress',
         hintText: 'example@tracker.com',
       ),
+      validator: (String value) {
+        if (!value.contains('@')) {
+          return 'Please enter a valid email';
+        }
+      },
     );
   }
 
@@ -46,15 +50,32 @@ class LoginScreenState extends State<LoginScreen>{
         labelText: 'Password',
         hintText: 'Password,',
       ),
+      validator: (String value) {
+        if (value.length < 4) {
+          return 'Password must be at least 4 characters';
+        }
+      },
+    );
+  }
+
+Widget resetButton() {
+    return RaisedButton(
+      child: Text('Reset'),
+      color: Colors.lightBlue[300],
+      onPressed: () {
+        formKey.currentState.reset();
+      },
     );
   }
 
 
-  Widget submitButton() {
+  Widget loginButton() {
     return RaisedButton(
-      child: Text('Submit'),
-      color: Colors.lightBlue[900],
-      onPressed: () {},
+      child: Text('Login'),
+      color: Colors.lightBlue[100],
+      onPressed: () {
+        print(formKey.currentState.validate()); // create a API connection
+      },
     );
   }
 }
